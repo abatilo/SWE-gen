@@ -939,9 +939,9 @@ async def _run_claude_code_session_async(
         # Configure SDK options
         options = ClaudeAgentOptions(
             allowed_tools=["Read", "Write", "Edit", "Glob", "Grep", "LS", "Bash"],
-            permission_mode="bypassPermissions",  # Auto-approve actions
+            permission_mode="auto",
             cwd=os.getcwd(),  # Run from project root
-            model="claude-opus-4-8",  # Use Opus 4.8
+            model="claude-opus-5-5",
             hooks={
                 "PreToolUse": [HookMatcher(matcher="Bash", hooks=[log_harbor_runs])]
             } if verbose else {},

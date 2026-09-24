@@ -327,7 +327,7 @@ def analyze(
         "claude-code", "-a", "--agent", help="Agent to run trials with", show_default=True
     ),
     model: str = typer.Option(
-        "anthropic/claude-opus-4-8",
+        "anthropic/claude-opus-5-5",
         "-m",
         "--model",
         help="Model to use for agent trials",
@@ -355,7 +355,7 @@ def analyze(
         False, "--skip-classify", help="Skip LLM classification of trial outcomes"
     ),
     analysis_model: str = typer.Option(
-        "claude-opus-4-8",
+        "claude-opus-5-5",
         "--analysis-model",
         help="Model for Claude Code classification",
         show_default=True,
