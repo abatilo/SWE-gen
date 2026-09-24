@@ -1,0 +1,17 @@
+## Intent & Decisions
+Screen PRs and write instructions with deepseek-ai/DeepSeek-V4-Flash-0731 on W&B Inference instead of OpenAI gpt-5.5. The endpoint is configured by environment only: OPENAI_BASE_URL=https://api.inference.wandb.ai/v1, OPENAI_API_KEY=$WANDB_INFERENCE_API_KEY, OPENAI_PROJECT_ID=cw-wb/at (sent as the OpenAI-Project header). VERDICT_MODEL for swegen analyze was left at gpt-5.5.
+
+## Actions & Verification
+Called evaluate_and_generate_task with real orchestrator inputs: typed-json-dataclass #2 three times (substantial each time; instruction named MappingMode, to_snake, to_camel, "Invalid mapping mode", and /app/src/typed_json_dataclass/utils.py, with no test references), #228 pytest bump (not substantial), #11 (substantial), pallets/click #3781 (substantial). Latency 5 to 26 s against the 90 s timeout. The full swegen create run on #2 then validated.
+
+## Errors & Mistakes
+None
+
+## Attempts & Outcomes
+None
+
+## Findings & Constraints
+Completion usage was 2258 to 3625 tokens against the old 4096 cap while the visible JSON is about 500 tokens, so hidden reasoning consumes most of the budget; the endpoint did not report reasoning_tokens. 16384 leaves headroom. Two of five instructions dropped spaces between words ("keysinthe", "deserialization,so").
+
+## Open Questions
+Instruction quality has not been checked with swegen analyze agent trials.
