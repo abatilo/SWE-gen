@@ -1,0 +1,17 @@
+## Intent & Decisions
+The user first asked for the power of two closest to 64,000 (65536), then changed the request: research the model's max output tokens and use that. VERDICT_MAX_TOKENS set to 393216 (384 * 1024). PR screening MAX_COMPLETION_TOKENS (16384) was not in scope and is unchanged.
+
+## Actions & Verification
+Pushed to abatilo/SWE-gen main. Called W&B chat completions with max_completion_tokens 393216, 1048576 and 2000000: all three returned finish_reason "stop" with no error.
+
+## Errors & Mistakes
+None
+
+## Attempts & Outcomes
+GET /v1/models on W&B lists the model with no token limit metadata.
+
+## Findings & Constraints
+Hugging Face model card: "For the high and max reasoning effort levels, we recommend a maximum output length of 384K tokens." OpenRouter lists a 1,048,576 max output. W&B accepted 2,000,000 without error, so the endpoint does not validate the value and it is only an upper bound. VERDICT_TIMEOUT is 120 s, so a response that actually used a large budget would time out long before reaching the cap.
+
+## Open Questions
+W&B's real server-side output cap is undocumented.
