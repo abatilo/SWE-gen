@@ -30,7 +30,7 @@ from .models import (
 # OpenAI verdict synthesis constants
 VERDICT_MODEL = "deepseek-ai/DeepSeek-V4-Flash-0731"
 VERDICT_TIMEOUT = 120.0
-VERDICT_MAX_TOKENS = 16384
+VERDICT_MAX_TOKENS = 393216
 
 
 # Load prompt templates
