@@ -422,8 +422,7 @@ def _run_agent_trials(
 
     cmd = harbor_cmd_base() + [
         "run",
-        "-p", str(dataset_path),
-        "-t", task_id,
+        "-p", str(dataset_path / task_id),
         "-a", args.agent,
         "-m", args.model,
         "-k", str(args.n_trials),
