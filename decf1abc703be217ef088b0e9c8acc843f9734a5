@@ -1,0 +1,17 @@
+## Intent & Decisions
+The user asked for the analyze verdict model to use W&B Inference with the DeepSeek flash model from their curl example (deepseek-ai/DeepSeek-V4-Flash-0731; the user called it "v4.1 flash", and the curl id was used verbatim). VERDICT_MAX_TOKENS raised 4096 -> 16384 to match the screening call.
+
+## Actions & Verification
+Called compute_task_verdict against W&B (OPENAI_BASE_URL, OPENAI_API_KEY=$WANDB_INFERENCE_API_KEY, OPENAI_PROJECT_ID=cw-wb/at) with two synthetic classifications (one GOOD_SUCCESS, one BAD_FAILURE). Parsed verdict returned in 11.2 s. Pushed to abatilo/SWE-gen main.
+
+## Errors & Mistakes
+None
+
+## Attempts & Outcomes
+None
+
+## Findings & Constraints
+With one BAD_FAILURE out of two trials the model returned is_good=True, confidence medium, primary_issue None, no recommendations. Verdict quality versus gpt-5.5 is unassessed.
+
+## Open Questions
+Whether DeepSeek verdicts are too lenient on task problems; needs real swegen analyze runs.
