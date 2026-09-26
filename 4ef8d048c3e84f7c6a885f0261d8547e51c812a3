@@ -1,0 +1,17 @@
+## Intent & Decisions
+Found while farming lightseekorg/TorchSpec with a loop of `swegen create`. Fix chosen: `-p <dataset>/<task_id>` (Harbor's -p accepts a single task directory) rather than `-i <task_id>`, because -i is a glob filter and a path needs no filter at all. Applied to harbor_runner.run_harbor_agent, analyze trial runs, the Claude Code prompt's harbor commands, and the next-steps panel.
+
+## Actions & Verification
+Stopped the TorchSpec loop (PR 45 was mid-session) once the bug was found. Reproduction: the PR 17 nop job dir `.swegen/harbor-jobs/lightseekorg__torchspec-17.nop.1790430296` contained two trials, torchspec-17 (reward 0) and torchspec-9 (reward 1); PR 17 was reported "Harbor nop: expected reward=0, actual reward=1". After the fix, `swegen validate tasks/lightseekorg__torchspec-17` with tasks 9 and 45 still in tasks/ produced one trial per job and PASSED (nop 0, oracle 1). Pushed to abatilo/SWE-gen main and reinstalled the uv tool.
+
+## Errors & Mistakes
+None
+
+## Attempts & Outcomes
+`harbor run --help` for both the locked harbor 0.17.1 and installed 0.23.0 describes -t as "Run a single task from the registry (org/name)", so this is not a regression from the uv tool pulling a newer harbor.
+
+## Findings & Constraints
+The bug is invisible when the output directory holds one task (the earlier typed-json-dataclass run). `swegen create` leaves failed tasks on disk (torchspec-9 stayed after failing validation), which is what exposed it. Claude Code's own in-session harbor runs had the same contamination, so it may have "fixed" tasks that were fine.
+
+## Open Questions
+Whether `swegen create` should delete tasks that fail validation, as AGENTS.md says farm does.
